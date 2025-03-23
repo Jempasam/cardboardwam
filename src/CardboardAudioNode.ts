@@ -104,7 +104,7 @@ function getCardboardAudioProcessor(moduleId: string) {
                     let stop = false
                     switch(note_state.step){
                         case STEP_ATTACK:{
-                            intensity = sample(ATTACK, i, time/attackDuration[i], false, true)
+                            intensity = sample(ATTACK, i, time/(attackDuration[i]||.00001), false, true)
                             if(time>attackDuration[i]){
                                 note_state.step = STEP_SUSTAIN
                                 note_state.last_start = sample_time
@@ -114,7 +114,7 @@ function getCardboardAudioProcessor(moduleId: string) {
                         }
                         case STEP_SUSTAIN:{
                             const doLoop = doSustainLoop[i]>.5
-                            intensity = sample(SUSTAIN, i, time/sustainDuration[i], doLoop, true)
+                            intensity = sample(SUSTAIN, i, time/(sustainDuration[i]||.00001), doLoop, true)
                             if(!doLoop && time>sustainDuration[i]){
                                 note_state.step = STEP_RELEASE
                                 note_state.last_start = sample_time
@@ -128,7 +128,7 @@ function getCardboardAudioProcessor(moduleId: string) {
                             break
                         }
                         case STEP_RELEASE:{
-                            intensity = sample(RELEASE, i, time/releaseDuration[i], false, true)
+                            intensity = sample(RELEASE, i, time/(releaseDuration[i]||.00001), false, true)
                             if(time>releaseDuration[i]){
                                 stop = true
                             }

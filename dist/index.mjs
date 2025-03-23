@@ -1071,16 +1071,16 @@ function he(l) {
           let O = !1;
           switch (w.step) {
             case a: {
-              k = m(f, M, T / b[M], !1, !0), T > b[M] && (w.step = r, w.last_start = $, w.multiplier *= k);
+              k = m(f, M, T / (b[M] || 1e-5), !1, !0), T > b[M] && (w.step = r, w.last_start = $, w.multiplier *= k);
               break;
             }
             case r: {
               const L = A[M] > 0.5;
-              k = m(S, M, T / V[M], L, !0), !L && T > V[M] && (w.step = c, w.last_start = $, w.multiplier *= k), w.doStop && (w.step = c, w.last_start = $, w.multiplier *= k);
+              k = m(S, M, T / (V[M] || 1e-5), L, !0), !L && T > V[M] && (w.step = c, w.last_start = $, w.multiplier *= k), w.doStop && (w.step = c, w.last_start = $, w.multiplier *= k);
               break;
             }
             case c: {
-              k = m(W, M, T / C[M], !1, !0), T > C[M] && (O = !0);
+              k = m(W, M, T / (C[M] || 1e-5), !1, !0), T > C[M] && (O = !0);
               break;
             }
           }
