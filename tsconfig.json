@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES2024",
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "useDefineForClassFields": false,
+        "types": ["vite/client"]
+    }
+}
