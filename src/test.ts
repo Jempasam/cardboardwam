@@ -2,6 +2,7 @@ import { initializeWamHost } from "@webaudiomodules/sdk"
 import { CardboardWAM } from "./CardboardWAM"
 import { WebAudioModule } from "@webaudiomodules/api"
 import { html } from "sam-lib"
+import { access } from "fs"
 
 const wams = [] as WebAudioModule[]
 
@@ -41,6 +42,16 @@ document.onclick = async() => {
 
     piano.audioNode.connect(wam.audioNode)
     piano.audioNode.connectEvents(wam.instanceId)
+
+    navigator.requestMIDIAccess().then( access =>{
+        for(let midi of access.inputs.values())
+            midi.onmidimessage = (e)=> wam.audioNode.scheduleEvents({
+                type: "wam-midi",
+                data:{
+                    bytes: [e.data[0],e.data[1],e.data[2]],
+                }
+            })
+    })
 
     wam.audioNode.connect(oscilloscope.audioNode)
     wam.audioNode.connect(spectrogram.audioNode)

@@ -54,21 +54,37 @@ function getCardboardAudioProcessor(moduleId: string) {
         doStop?: true
     }
 
+
     function sample(array: Float32Array<ArrayBufferLike>[], i: number, fpos: number, doLoop:boolean, doInterpolate: boolean){
-        let pos, pos2
+        let pos_, pos, pos2
         if(doLoop){
             const ipos = Math.floor(fpos*array.length)
+            pos_ = (ipos+array.length-1)%array.length
             pos = (ipos+array.length)%array.length
             pos2 = (pos+1)%array.length
         }
         else{
             const ipos = Math.floor(fpos*array.length)
+            pos_ = Math.min(Math.max(0,ipos-1), array.length-1)
             pos = Math.min(ipos, array.length-1)
-            pos2 = Math.min(pos+1, array.length-1)
+            pos2 = Math.min(ipos+1, array.length-1)
         }
         if(doInterpolate){
-            const strength = fpos*array.length-Math.floor(fpos*array.length)
-            return array[pos][i]*(1-strength) + array[pos2][i]*strength
+            let strength = fpos*array.length-Math.floor(fpos*array.length)
+
+            /* EXPERIMENTAL non linear implementation
+            let d1 = array[pos][i] - array[pos_][i]
+            let d2 = array[pos2][i] - array[pos][i]
+            let pente = Math.abs(d1-d2)
+            let d
+            if(Math.abs(d1-d2)<.1) d = d1*(1-strength)+d2*strength
+            else d = d2
+            let fromval = array[pos][i]
+            let toval = array[pos2][i]
+            return fromval + d*strength*/
+
+            return array[pos][i]*(1-strength)+array[pos2][i]*strength
+            
         }
         else return array[pos][i]
     }
