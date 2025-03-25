@@ -57,16 +57,54 @@ export class CardboardGUI extends HTMLElement{
             const curve = new Curve(
                 -1,1, 0, true,
                 null,
-                [],
+                [{index:this.wave.length/2,name:""}],
                 this.wave
             )
     
             const interpolate = new BooleanField(this.interpolate, "Interpolate curve points", "interpolate")
+
+            const symmetrize = html.a`<button title="Symmetrize the wave">Symmetrize</button>`
+            symmetrize.onclick = ()=>{
+                for(let i=0; i<this.wave.length/2; i++){
+                    this.wave[this.wave.length-1-i].set(-this.wave[i].value)
+                }
+            }
+
+            const smooth = html.a`<button title="Smooth the wave shape">Smooth</button>`
+            smooth.onclick = ()=>{
+                const before = this.wave.map(it=>it.value)
+                for(let i=0; i<this.wave.length; i++){
+                    let value = 0
+                    value += before[(i-1+this.wave.length)%this.wave.length]
+                    value += before[i]
+                    value += before[(i+1)%this.wave.length]
+                    this.wave[i].set(value/3)
+                }
+            }
+
+            const noise = html.a`<button title="Noisify the wave">Noise</button>`
+            noise.onclick = ()=>{
+                for(let i=0; i<this.wave.length; i++){this.wave[i].set(Math.max(-1,Math.min(1, this.wave[i].value+(Math.random()-.5)/2)))}
+            }
+
+            const sin = html.a`<button title="Set the wave to a sine wave">Sine</button>`
+            sin.onclick = ()=> { for(let i=0; i<this.wave.length; i++) this.wave[i].set(Math.sin(i/this.wave.length*Math.PI*2)) }
+
+            const square = html.a`<button title="Set the wave to a square wave">Square</button>`
+            square.onclick = ()=> { for(let i=0; i<this.wave.length; i++) this.wave[i].set(i<this.wave.length/2?1:-1) }
+
+            const sawtooth = html.a`<button title="Set the wave to a sawtooth">Sawtooth</button>`
+            sawtooth.onclick = ()=> { for(let i=0; i<this.wave.length; i++) this.wave[i].set(i<this.wave.length/2?i/this.wave.length*2:-2+i/this.wave.length*2) }
+            
+            const triangle = html.a`<button title="Set the wave to a triangle">Triangle</button>`
+            triangle.onclick = ()=> { for(let i=0; i<this.wave.length; i++) this.wave[i].set(i<this.wave.length/2?i/this.wave.length*4-1:3-i/this.wave.length*4) }
     
             content = html`
                 ${curve.element}
                 <div id="options">
                     ${interpolate.element}
+                    <div class=category>${symmetrize} ${smooth} ${noise}</div>
+                    <div class=category>${sin} ${square} ${sawtooth} ${triangle}</div>
                 </div>
             `
     
