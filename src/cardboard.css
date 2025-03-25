@@ -16,12 +16,43 @@
     font-family: cursive;
 
     width: 40rem;
-    height: 35rem;
+    height: 38rem;
     padding-right: 5%;
+    padding-left: 2rem;
     padding-bottom: 2%;
 
     color: black;
     font-size: 1rem;
+}
+
+.button_list{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 80%;
+    border-radius: 1rem;
+    background-image: url("assets/cardboard.jpg");
+    background-size: cover;
+    background-position: bottom;
+    box-shadow: -0.3rem -0.3rem 0.5rem rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    overflow-y: scroll;
+    >button{
+        color: white;
+        background: none;
+        text-shadow: 0.1rem 0.1rem 0 black, -0.1rem -0.1rem 0 black;
+        padding: .3rem;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        margin: .3rem;
+        font-size: 1.2rem;
+        border: 0.2rem dotted black;
+        &:hover{
+            scale: 1.1;
+            box-shadow: 0.15rem 0.15rem .5rem 0 rgba(0, 0, 0, 0.8);
+        }
+    }
 }
 
 .crayon{

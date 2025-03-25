@@ -92,6 +92,10 @@ document.onclick = async() => {
             const states = await Promise.all(wams.map(wam=>wam.audioNode.getState()))
             localStorage.setItem("wamstates", JSON.stringify(states))
         }}}>Save</button>
+        <button @${{click:async()=>{
+            const state = await wam.audioNode.getState()
+            console.log(JSON.stringify(state))
+        }}}>Print State</button>
         <button @${{click:()=>{
             const states = JSON.parse(localStorage.getItem("wamstates"))
             wams.forEach((wam,i)=>wam.audioNode.setState(states[i]))
